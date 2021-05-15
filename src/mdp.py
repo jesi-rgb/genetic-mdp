@@ -14,20 +14,24 @@ def create_random_solution(n, m):
     # aquellos índices que superen un umbral se ponen a 1
     M[np.random.rand(n) > 0.3] = 1
 
+    M = shape_solution(M, m)
+    return M
+
+
+def shape_solution(M, m):
     while np.sum(M) > m:
         ones = M.nonzero()[0]
         random_one = np.random.choice(ones)
         M[random_one] = 0
 
     while np.sum(M) < m:
-       zeros = np.nonzero(M==0)[0]
-       random_zero = np.random.choice(zeros)
-       M[random_zero] = 1
+        zeros = np.nonzero(M==0)[0]
+        random_zero = np.random.choice(zeros)
+        M[random_zero] = 1
 
     return M
 
-
-
+   
 
 
 
@@ -101,7 +105,7 @@ def neighbours(M):
 
 def local_search(n, D, m):
     M = np.zeros(n, dtype=int)
-    M[n-m:n] = 1
+    M[n - m:n] = 1
     M = np.random.permutation(M)
 
     curr_div = calculate_diversity(M, D)
@@ -109,18 +113,37 @@ def local_search(n, D, m):
     # calculate neighbourhood
     neighbours(M)
 
+def classic_crossover(father, mother):
+    # take random point
+    rand_index = np.random.choice(father)
+    # copy first half of father to child
+    lh_f = father[0:rand_index] # left hand father
+    rh_f = father[rand_index:] # right hand father
+    # copy last half of mother to child
+    lh_m = mother[0:rand_index] # left hand mother
+    rh_m = mother[rand_index:] # right hand mother
+ 
+    # creation of the new generation
+    child_1 = np.concatenate(lh_f, rh_m)
+    child_2 = np.concatenate(lh_m, rh_f)
 
+    # make sure the solutions are valid
+    child_1 = shape_solution(child_1)
+    child_2 = shape_solution(child_2)
+    return (child_1, child_2)
 
-def genetic_algorithm(n):
+def genetic_algorithm(n, m, initial_population, death_rate):
     # Initialize population
     # For this, lets generate 1 possible solution and calculate permutations over it
-    first_generation = [create_random_solution(n) for i in range(10)]
+    first_generation = [create_random_solution(n, m) for i in range(initial_population)]
 
     # Calculate diversity of each one
     diversity_arr = [calculate_diversity(s) for s in first_generation]
 
     # Take the best k ones and crossover
-    
+    gen_div = list(zip(first_generation, diversity_arr)) 
+    sorted = sort(gen_div, key = lambda x: x[1])
+
 
     # Mutation
 

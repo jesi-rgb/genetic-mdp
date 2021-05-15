@@ -24,8 +24,16 @@ def read_distance_matrix(path):
 
     print("Reading {} lines".format(len(lines) - 1))
     n, m = lines[0].split(" ")
-    data = [float(line.strip().split(" ")[2]) for line in lines[1:] ]
+    data = np.array([float(line.strip().split(" ")[2]) for line in lines[1:]])
     return n, m, data
+
+
+def fill_upper_triangular(a):
+    n = int(np.sqrt(len(a)*2))+1
+    mask = np.tri(n,dtype=bool, k=-1) # or np.arange(n)[:,None] > np.arange(n)
+    out = np.zeros((n,n),dtype=float)
+    out[mask] = a
+    return out
 
 
 def shape_solution(M, m):
@@ -216,7 +224,7 @@ if __name__ == "__main__":
 
     print(data)
     # creamos una matriz de distancias para cada pareja de elementos
-    # D = np.triu(data)
+    D = fill_upper_triangular(data).T
 
     # creamos una solución aleatoria
 

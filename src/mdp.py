@@ -1,14 +1,10 @@
-import numpy as np
-from itertools import combinations, permutations, product, groupby
-import multiprocessing as mp
+from itertools import product, groupby
+from math import factorial
 
 from pprint import pprint
-from numpy.core.fromnumeric import shape
 
+import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
-
-from numpy.random import random
-from math import factorial
 
 def create_random_solution(n, m):
     # creamos una solución vacía
@@ -35,9 +31,6 @@ def shape_solution(M, m):
     return M
 
    
-
-
-
 def calculate_diversity(M, D):
     mesh = np.array(np.meshgrid(M, M))
     combs = mesh.T.reshape(-1, 2)
@@ -106,16 +99,6 @@ def neighbours(M):
 
 
 
-def local_search(n, D, m):
-    M = np.zeros(n, dtype=int)
-    M[n - m:n] = 1
-    M = np.random.permutation(M)
-
-    curr_div = calculate_diversity(M, D)
-
-    # calculate neighbourhood
-    neighbours(M)
-
 def classic_crossover(father, mother, m):
     # take random point
     rand_index = np.random.randint(1, len(father) - 1)
@@ -134,7 +117,6 @@ def classic_crossover(father, mother, m):
     child_1 = shape_solution(child_1, m)
     child_2 = shape_solution(child_2, m)
     return (child_1, child_2)
-
 
 
 
@@ -206,7 +188,7 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
         print("Patience counter: {}. {} more to finish if equal.".format(counter, patience - counter))
         if counter == patience:
             print("Value stabilized at {} with solution {}".format(current_best_solution_d, current_best_solution))
-            break
+            return (current_best_solution, current_best_solution_d)
 
     # Mutation
 
@@ -214,13 +196,12 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
 
 
 if __name__ == "__main__":
-    # np.random.seed(7)
+    np.random.seed(7)
 
     n = 100 # número de elementos en nuestro array original
     m = 10 
     
     total_space = factorial(n) // (factorial(n - m) * factorial(m))
-    print("El espacio de búsqueda consta de {} posibles soluciones para n = {} y m = {}.".format(total_space, n, m))
 
     # creamos una matriz de distancias para cada pareja de elementos
     # la diagonal principal será 0 porque d(i, i) = 0
@@ -234,9 +215,10 @@ if __name__ == "__main__":
     print()
     print()
 
-    genetic_algorithm(n, m, D, 10, 5, 100_000, 50)
+    genetic_algorithm(n, m, D, initial_population=100, k_top=15, n_iterations=100_000, patience=50)
 
 
+    print("\nEl espacio de búsqueda consta de {} posibles soluciones para n = {} y m = {}.".format(total_space, n, m))
 
     # sol_1 = create_random_solution(n, m)
     # sol_2 = create_random_solution(n, m)

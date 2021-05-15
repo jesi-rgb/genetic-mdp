@@ -17,6 +17,17 @@ def create_random_solution(n, m):
     return M
 
 
+def read_distance_matrix(path):
+    with open(path) as file:
+        lines = file.readlines()
+
+
+    print("Reading {} lines".format(len(lines) - 1))
+    n, m = lines[0].split(" ")
+    data = [float(line.strip().split(" ")[2]) for line in lines[1:] ]
+    return n, m, data
+
+
 def shape_solution(M, m):
     while np.sum(M) > m:
         ones = M.nonzero()[0]
@@ -34,7 +45,6 @@ def shape_solution(M, m):
 def calculate_diversity(M, D):
     mesh = np.array(np.meshgrid(M, M))
     combs = mesh.T.reshape(-1, 2)
-    
     M_i = np.indices(np.array(M).shape)
     mesh_i = np.array(np.meshgrid(M_i, M_i))
     combs_i = mesh_i.T.reshape(-1, 2)
@@ -197,16 +207,16 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
 
 if __name__ == "__main__":
     np.random.seed(7)
-
-    n = 100 # número de elementos en nuestro array original
-    m = 10 
+# src/MDG-a_1_n500_m50data/MDG-a_1_n500_m50.txt
+    n, m, data = read_distance_matrix("src/data/MDG-a_1_n500_m50.txt")
+    n = 10 # número de elementos en nuestro array original
+    m = 5 
     
     total_space = factorial(n) // (factorial(n - m) * factorial(m))
 
+    print(data)
     # creamos una matriz de distancias para cada pareja de elementos
-    # la diagonal principal será 0 porque d(i, i) = 0
-    D = np.random.randint(100, size=(n, n))
-    np.fill_diagonal(D, 0)
+    # D = np.triu(data)
 
     # creamos una solución aleatoria
 
@@ -216,6 +226,7 @@ if __name__ == "__main__":
     print()
 
     genetic_algorithm(n, m, D, initial_population=100, k_top=15, n_iterations=100_000, patience=50)
+    # brute_force(n, D, m)
 
 
     print("\nEl espacio de búsqueda consta de {} posibles soluciones para n = {} y m = {}.".format(total_space, n, m))

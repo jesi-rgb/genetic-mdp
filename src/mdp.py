@@ -4,22 +4,29 @@ import multiprocessing as mp
 
 from pprint import pprint
 
+from numpy.random import random
+from math import factorial
 
-    
-
-
-
-def create_random_solution(n):
+def create_random_solution(n, m):
     # creamos una solución vacía
     M = np.zeros(n, dtype=int)
 
-    # creamos valores aleatorios para los índices elegidos
-    chosen = np.random.rand(n)
-
     # aquellos índices que superen un umbral se ponen a 1
-    M[chosen > 0.5] = 1
+    M[np.random.rand(n) > 0.3] = 1
+
+    while np.sum(M) > m:
+        ones = M.nonzero()[0]
+        random_one = np.random.choice(ones)
+        M[random_one] = 0
+
+    while np.sum(M) < m:
+       zeros = np.nonzero(M==0)[0]
+       random_zero = np.random.choice(zeros)
+       M[random_zero] = 1
 
     return M
+
+
 
 
 
@@ -38,15 +45,15 @@ def calculate_diversity(M, D):
                     for i in col_stack])
 
 
-def brute_force(n, D, max_m):
-    # extract all posible combinations of max_m cardinality to
+def brute_force(n, D, m):
+    # extract all posible combinations of m cardinality to
     # reduce search space
     all_combs = [np.array(i) 
                 for i in product([0, 1], repeat=n)]
 
-    filtered_combs = list(filter(lambda x: np.sum(x)==max_m, all_combs))
+    filtered_combs = list(filter(lambda x: np.sum(x)==m, all_combs))
 
-    print("Espacio de posibles soluciones para {} elementos y m = {}: {}\n".format(n, max_m, len(filtered_combs)))
+    print("Espacio de posibles soluciones para {} elementos y m = {}: {}\n".format(n, m, len(filtered_combs)))
 
     all_solutions = [calculate_diversity(c, D) for c in filtered_combs]
 
@@ -92,9 +99,9 @@ def neighbours(M):
 
 
 
-def local_search(n, D, max_m):
+def local_search(n, D, m):
     M = np.zeros(n, dtype=int)
-    M[n-max_m:n] = 1
+    M[n-m:n] = 1
     M = np.random.permutation(M)
 
     curr_div = calculate_diversity(M, D)
@@ -104,11 +111,30 @@ def local_search(n, D, max_m):
 
 
 
+def genetic_algorithm(n):
+    # Initialize population
+    # For this, lets generate 1 possible solution and calculate permutations over it
+    first_generation = [create_random_solution(n) for i in range(10)]
+
+    # Calculate diversity of each one
+    diversity_arr = [calculate_diversity(s) for s in first_generation]
+
+    # Take the best k ones and crossover
+    
+
+    # Mutation
+
+
+
+
 if __name__ == "__main__":
-    np.random.seed(9)
+    np.random.seed(1)
 
     n = 20 # número de elementos en nuestro array original
-    max_m = 8
+    m = 10 
+    
+    total_space = factorial(n) // (factorial(n - m) * factorial(m))
+    print("El espacio de búsqueda consta de {} posibles soluciones para n = {} y m = {}.".format(total_space, n, m))
 
     # creamos una matriz de distancias para cada pareja de elementos
     # la diagonal principal será 0 porque d(i, i) = 0
@@ -121,6 +147,8 @@ if __name__ == "__main__":
     print(D)
     print()
     print()
-    brute_force(n, D, max_m)
-    # local_search(n, D, max_m)
-    # calculate_sizes(n, max_m)
+    # brute_force(n, D, m)
+    # local_search(n, D, m)
+    # calculate_sizes(n, m)
+
+

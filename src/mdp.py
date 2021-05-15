@@ -5,6 +5,8 @@ import multiprocessing as mp
 from pprint import pprint
 from numpy.core.fromnumeric import shape
 
+from numpy.lib.stride_tricks import sliding_window_view
+
 from numpy.random import random
 from math import factorial
 
@@ -140,8 +142,8 @@ def two_point_crossover(father, mother, m):
     point_1 = np.random.randint(1, len(father) // 2)
     point_2 = np.random.randint(point_1 + 1, len(father) - 1)
 
-    inside_f = father[point_1, point_2]
-    inside_m = mother[point_1, point_2]
+    inside_f = father[point_1:point_2]
+    inside_m = mother[point_1:point_2]
 
     outside_l_f = father[0:point_1]
     outside_r_f = father[point_2:]
@@ -158,18 +160,52 @@ def two_point_crossover(father, mother, m):
     return (child_1, child_2)
 
 
-def genetic_algorithm(n, m, initial_population, death_rate):
+def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience):
     # Initialize population
     # For this, lets generate 1 possible solution and calculate permutations over it
-    first_generation = [create_random_solution(n, m) for i in range(initial_population)]
+    current_generation = [create_random_solution(n, m) for i in range(initial_population)]
 
-    # Calculate diversity of each one
-    diversity_arr = [calculate_diversity(s) for s in first_generation]
+    current_best_solution = 0
+    last_best_solution = 0
+    counter = 0
+    for i in range(n_iterations):
+        print("*** Iteration {} ***\n\n".format(i))
+        # Calculate diversity of each one
+        diversity_arr = [calculate_diversity(s, D) for s in current_generation]
 
-    # Take the best k ones and crossover
-    gen_div = list(zip(first_generation, diversity_arr)) 
-    sorted = sort(gen_div, key = lambda x: x[1])
+        # print("Diversity array")
+        # print(diversity_arr)
 
+        # Take the best k ones and crossover
+        gen_div = list(zip(current_generation, diversity_arr)) 
+        sorted_gen_div = sorted(gen_div, key = lambda x: x[1], reverse=True)
+
+        # print("Sorted gen")
+        # pprint(sorted_gen_div)
+
+        print("Best solution in gen {} has diversity {}\n".format(i, sorted_gen_div[0][1]))
+        best_solutions = [s[0] for s in sorted_gen_div]
+        survivals = best_solutions[:k_top]
+
+        pairs = np.squeeze(sliding_window_view(survivals, (2, n)))
+
+        current_generation = [classic_crossover(pair[0], pair[1], m) for pair in pairs]
+        current_generation = np.reshape(current_generation, (2 * (k_top - 1), n))
+
+        if current_best_solution < sorted_gen_div[0][1]:
+            current_best_solution = sorted_gen_div[0][1]
+            counter = 0
+
+        if(last_best_solution == current_best_solution):
+            counter += 1
+        else:
+            last_best_solution = current_best_solution
+
+        print("Best solution so far has diversity {}\n".format(last_best_solution))
+        print("Patience counter: {}. {} more to finish if equal.".format(counter, patience - counter))
+        if counter == patience:
+            print("Value stabilized at {} with solution {}".format(sorted_gen_div[0][1], sorted_gen_div[0][0]))
+            break
 
     # Mutation
 
@@ -179,7 +215,7 @@ def genetic_algorithm(n, m, initial_population, death_rate):
 if __name__ == "__main__":
     # np.random.seed(7)
 
-    n = 20 # número de elementos en nuestro array original
+    n = 400 # número de elementos en nuestro array original
     m = 10 
     
     total_space = factorial(n) // (factorial(n - m) * factorial(m))
@@ -196,15 +232,17 @@ if __name__ == "__main__":
     print(D)
     print()
     print()
-    sol_1 = create_random_solution(n, m)
-    sol_2 = create_random_solution(n, m)
-    print("Father:", sol_1)
-    print("Mother:", sol_2)
-    c_1, c_2 = classic_crossover(sol_1, sol_2, m)
-    print("Child 1:", c_1)
-    print("Child 2:", c_2)
-    # brute_force(n, D, m)
-    # local_search(n, D, m)
-    # calculate_sizes(n, m)
+
+    genetic_algorithm(n, m, D, 10, 5, 100_000, 50)
+
+
+
+    # sol_1 = create_random_solution(n, m)
+    # sol_2 = create_random_solution(n, m)
+    # print("Father: ", sol_1)
+    # print("Mother: ", sol_2)
+    # c_1, c_2 = two_point_crossover(sol_1, sol_2, m)
+    # print("Child 1:", c_1)
+    # print("Child 2:", c_2)
 
 

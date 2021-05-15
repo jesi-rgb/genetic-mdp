@@ -3,6 +3,7 @@ from itertools import combinations, permutations, product, groupby
 import multiprocessing as mp
 
 from pprint import pprint
+from numpy.core.fromnumeric import shape
 
 from numpy.random import random
 from math import factorial
@@ -131,6 +132,31 @@ def classic_crossover(father, mother, m):
     child_1 = shape_solution(child_1, m)
     child_2 = shape_solution(child_2, m)
     return (child_1, child_2)
+
+
+
+
+def two_point_crossover(father, mother, m):
+    point_1 = np.random.randint(1, len(father) // 2)
+    point_2 = np.random.randint(point_1 + 1, len(father) - 1)
+
+    inside_f = father[point_1, point_2]
+    inside_m = mother[point_1, point_2]
+
+    outside_l_f = father[0:point_1]
+    outside_r_f = father[point_2:]
+
+    outside_l_m = mother[0:point_1]
+    outside_r_m = mother[point_2:]
+
+    child_1 = np.concatenate((outside_l_f, inside_m, outside_r_f))
+    child_2 = np.concatenate((outside_l_m, inside_f, outside_r_m))
+    
+    child_1 = shape_solution(child_1, m)
+    child_2 = shape_solution(child_2, m)
+
+    return (child_1, child_2)
+
 
 def genetic_algorithm(n, m, initial_population, death_rate):
     # Initialize population

@@ -165,7 +165,7 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
     # For this, lets generate 1 possible solution and calculate permutations over it
     current_generation = [create_random_solution(n, m) for i in range(initial_population)]
 
-    current_best_solution = 0
+    current_best_solution_d = 0
     last_best_solution = 0
     counter = 0
     for i in range(n_iterations):
@@ -192,19 +192,20 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
         current_generation = [classic_crossover(pair[0], pair[1], m) for pair in pairs]
         current_generation = np.reshape(current_generation, (2 * (k_top - 1), n))
 
-        if current_best_solution < sorted_gen_div[0][1]:
-            current_best_solution = sorted_gen_div[0][1]
+        if current_best_solution_d < sorted_gen_div[0][1]:
+            current_best_solution_d = sorted_gen_div[0][1]
+            current_best_solution = sorted_gen_div[0][0]
             counter = 0
 
-        if(last_best_solution == current_best_solution):
+        if(last_best_solution == current_best_solution_d):
             counter += 1
         else:
-            last_best_solution = current_best_solution
+            last_best_solution = current_best_solution_d
 
         print("Best solution so far has diversity {}\n".format(last_best_solution))
         print("Patience counter: {}. {} more to finish if equal.".format(counter, patience - counter))
         if counter == patience:
-            print("Value stabilized at {} with solution {}".format(sorted_gen_div[0][1], sorted_gen_div[0][0]))
+            print("Value stabilized at {} with solution {}".format(current_best_solution_d, current_best_solution))
             break
 
     # Mutation
@@ -215,7 +216,7 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
 if __name__ == "__main__":
     # np.random.seed(7)
 
-    n = 400 # número de elementos en nuestro array original
+    n = 100 # número de elementos en nuestro array original
     m = 10 
     
     total_space = factorial(n) // (factorial(n - m) * factorial(m))

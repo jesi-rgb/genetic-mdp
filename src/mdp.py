@@ -24,6 +24,7 @@ def read_distance_matrix(path):
 
     print("Reading {} lines".format(len(lines) - 1))
     n, m = lines[0].split(" ")
+    n, m = int(n), int(m)
     data = np.array([float(line.strip().split(" ")[2]) for line in lines[1:]])
     return n, m, data
 
@@ -215,10 +216,8 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
 
 if __name__ == "__main__":
     np.random.seed(7)
-# src/MDG-a_1_n500_m50data/MDG-a_1_n500_m50.txt
+
     n, m, data = read_distance_matrix("src/data/MDG-a_1_n500_m50.txt")
-    n = 10 # número de elementos en nuestro array original
-    m = 5 
     
     total_space = factorial(n) // (factorial(n - m) * factorial(m))
 
@@ -233,7 +232,7 @@ if __name__ == "__main__":
     print()
     print()
 
-    genetic_algorithm(n, m, D, initial_population=100, k_top=15, n_iterations=100_000, patience=50)
+    genetic_algorithm(n, m, D, initial_population=100, k_top=15, n_iterations=100_000, patience=20)
     # brute_force(n, D, m)
 
 

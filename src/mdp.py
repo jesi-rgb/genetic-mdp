@@ -113,9 +113,9 @@ def local_search(n, D, m):
     # calculate neighbourhood
     neighbours(M)
 
-def classic_crossover(father, mother):
+def classic_crossover(father, mother, m):
     # take random point
-    rand_index = np.random.choice(father)
+    rand_index = np.random.randint(1, len(father) - 1)
     # copy first half of father to child
     lh_f = father[0:rand_index] # left hand father
     rh_f = father[rand_index:] # right hand father
@@ -124,12 +124,12 @@ def classic_crossover(father, mother):
     rh_m = mother[rand_index:] # right hand mother
  
     # creation of the new generation
-    child_1 = np.concatenate(lh_f, rh_m)
-    child_2 = np.concatenate(lh_m, rh_f)
+    child_1 = np.concatenate((lh_f, rh_m))
+    child_2 = np.concatenate((lh_m, rh_f))
 
     # make sure the solutions are valid
-    child_1 = shape_solution(child_1)
-    child_2 = shape_solution(child_2)
+    child_1 = shape_solution(child_1, m)
+    child_2 = shape_solution(child_2, m)
     return (child_1, child_2)
 
 def genetic_algorithm(n, m, initial_population, death_rate):
@@ -151,7 +151,7 @@ def genetic_algorithm(n, m, initial_population, death_rate):
 
 
 if __name__ == "__main__":
-    np.random.seed(1)
+    # np.random.seed(7)
 
     n = 20 # número de elementos en nuestro array original
     m = 10 
@@ -170,6 +170,13 @@ if __name__ == "__main__":
     print(D)
     print()
     print()
+    sol_1 = create_random_solution(n, m)
+    sol_2 = create_random_solution(n, m)
+    print("Father:", sol_1)
+    print("Mother:", sol_2)
+    c_1, c_2 = classic_crossover(sol_1, sol_2, m)
+    print("Child 1:", c_1)
+    print("Child 2:", c_2)
     # brute_force(n, D, m)
     # local_search(n, D, m)
     # calculate_sizes(n, m)

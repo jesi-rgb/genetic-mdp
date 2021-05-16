@@ -34,7 +34,7 @@ def fill_upper_triangular(a):
     mask = np.tri(n,dtype=bool, k=-1) # or np.arange(n)[:,None] > np.arange(n)
     out = np.zeros((n,n),dtype=float)
     out[mask] = a
-    return out
+    return out.T
 
 
 def shape_solution(M, m):
@@ -81,44 +81,15 @@ def brute_force(n, D, m):
     best_comb = filtered_combs[index]
     print("La mejor solución es {}, en el índice {} con una diversidad de {}".format(best_comb, index, max_v))
 
-def swap(M, index, left=True):
-    # flip
-    if left:
-        if M[index - 1] != 1:
-            M[index], M[index - 1] = M[index - 1], M[index]
-        else:
-            M[index], M[index + 1] = M[index + 1], M[index]
-    else:
-        if M[index + 1] != 1:
-            M[index], M[index + 1] = M[index + 1], M[index]
-        else:
-            M[index], M[index - 1] = M[index - 1], M[index]
 
-    return M
+def mutation(M, m_factor):
+    return [genotype if np.random.rand() > m_factor else 1 - genotype for genotype in M]
 
-def neighbours(M):
-    # detect the ones
-    indices = np.indices(M.shape).flatten()[M==True]
-
-    meta_indices = np.indices(indices.shape).flatten()
-
-    ole = np.column_stack((meta_indices, indices))
-
-    gb = groupby(ole, key=lambda x: x[0] - x[1])
-    all_groups = ([i[1] for i in g] for _, g in gb)
-
-    bad_indices = list(filter(lambda x: len(x) > 1, all_groups))
-
-    list(map(lambda x: [x[0], x[-1]], bad_indices))
-
-    pprint(indices)
-
-    ole = [swap(M.copy(), i) for i in indices]
-    pprint(ole)
 
 
 
 def classic_crossover(father, mother, m):
+
     # take random point
     rand_index = np.random.randint(1, len(father) - 1)
     # copy first half of father to child
@@ -161,7 +132,7 @@ def two_point_crossover(father, mother, m):
     return (child_1, child_2)
 
 
-def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience):
+def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations, patience):
     # Initialize population
     # For this, lets generate 1 possible solution and calculate permutations over it
     current_generation = [create_random_solution(n, m) for i in range(initial_population)]
@@ -174,15 +145,11 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
         # Calculate diversity of each one
         diversity_arr = [calculate_diversity(s, D) for s in current_generation]
 
-        # print("Diversity array")
-        # print(diversity_arr)
 
         # Take the best k ones and crossover
         gen_div = list(zip(current_generation, diversity_arr)) 
         sorted_gen_div = sorted(gen_div, key = lambda x: x[1], reverse=True)
 
-        # print("Sorted gen")
-        # pprint(sorted_gen_div)
 
         print("Best solution in gen {} has diversity {}\n".format(i, sorted_gen_div[0][1]))
         best_solutions = [s[0] for s in sorted_gen_div]
@@ -210,6 +177,7 @@ def genetic_algorithm(n, m, D, initial_population, k_top, n_iterations, patience
             return (current_best_solution, current_best_solution_d)
 
     # Mutation
+        current_generation = [mutation(solution, m_factor) for solution in current_generation]
 
 
 
@@ -223,7 +191,8 @@ if __name__ == "__main__":
 
     print(data)
     # creamos una matriz de distancias para cada pareja de elementos
-    D = fill_upper_triangular(data).T
+    D = fill_upper_triangular(data)
+
 
     # creamos una solución aleatoria
 
@@ -232,7 +201,7 @@ if __name__ == "__main__":
     print()
     print()
 
-    genetic_algorithm(n, m, D, initial_population=100, k_top=15, n_iterations=100_000, patience=20)
+    genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.02, n_iterations=100, patience=20)
     # brute_force(n, D, m)
 
 

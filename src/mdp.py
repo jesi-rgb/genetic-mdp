@@ -52,14 +52,40 @@ def shape_solution(M, m):
 
    
 def calculate_diversity(M, D):
+    
+    '''
+    This function calculates the diversity of a solution based on the
+    definition for the Maximum Diversity Problem.
+    '''
+
+    # first, find all the possible combination of indices that lie
+    # within the upper triangular section of our n x n matrix
+    indices_triu = np.argwhere(np.triu(np.ones((len(M),)*2),1))
+    indices_triu = indices_triu[indices_triu[:,0] < indices_triu[:,1]]
+
+    # second, find all posible combinations of genotypes
+    # within our particular solution
     mesh = np.array(np.meshgrid(M, M))
     combs = mesh.T.reshape(-1, 2)
+
+    # third, calculate all the possible combinations of genotypes, 
+    # just as before, but now with the indices, not the values themselves
     M_i = np.indices(np.array(M).shape)
     mesh_i = np.array(np.meshgrid(M_i, M_i))
     combs_i = mesh_i.T.reshape(-1, 2)
 
-    col_stack = np.column_stack((combs, combs_i))
+    # given those, find all combinations that match our
+    # upper triangular section rule, just like before
+    combs_triu = combs[combs_i[:,0] < combs_i[:,1]]
 
+    # stack the results so we have rows in the format: [gen1, gen2, gen1_index, gen2_index]
+    col_stack = np.column_stack((combs_triu, indices_triu))
+
+    # to calculate the diversity, access the distances matrix with
+    # gen1_index and gen2_index, and multiply by the values gen1 and gen2 themselves.
+    # If some of the values is 0, this will all be canceled out. 
+    # This will return a vector that will contain either the value 
+    # of the distance between two particular genes, or 0. Sum it all up and return.
     return np.sum([D[ i[2], i[3] ] * i[0] * i[1] 
                     for i in col_stack])
 
@@ -183,9 +209,9 @@ def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations
 
 
 if __name__ == "__main__":
-    np.random.seed(7)
+    # np.random.seed(7)
 
-    n, m, data = read_distance_matrix("src/data/MDG-a_1_n500_m50.txt")
+    n, m, data = read_distance_matrix("src/data/MDG-a_2_n500_m50.txt")
     
     total_space = factorial(n) // (factorial(n - m) * factorial(m))
 
@@ -202,17 +228,8 @@ if __name__ == "__main__":
     print()
 
     genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.02, n_iterations=100, patience=20)
-    # brute_force(n, D, m)
-
 
     print("\nEl espacio de búsqueda consta de {} posibles soluciones para n = {} y m = {}.".format(total_space, n, m))
 
-    # sol_1 = create_random_solution(n, m)
-    # sol_2 = create_random_solution(n, m)
-    # print("Father: ", sol_1)
-    # print("Mother: ", sol_2)
-    # c_1, c_2 = two_point_crossover(sol_1, sol_2, m)
-    # print("Child 1:", c_1)
-    # print("Child 2:", c_2)
 
 

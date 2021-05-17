@@ -7,6 +7,11 @@ import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
 
 def create_random_solution(n, m):
+    '''
+    Creates a random solution given the restrictions for n and m.
+    Given n = 6 and m = 3, for example, return a random solution
+    with 6 numbers out of which 3 must be one, and the rest 0.
+    '''
     # creamos una solución vacía
     M = np.zeros(n, dtype=int)
 
@@ -18,6 +23,11 @@ def create_random_solution(n, m):
 
 
 def read_distance_matrix(path):
+    '''
+    Helper function to read the upper triangluar of the 
+    distance matrix from file.
+    Returns n, m and the values themselves.
+    '''
     with open(path) as file:
         lines = file.readlines()
 
@@ -30,6 +40,10 @@ def read_distance_matrix(path):
 
 
 def fill_upper_triangular(a):
+    '''
+    Creates and returns a (n, n) matrix with the upper triangular
+    filled with the data recovered from the files.
+    '''
     n = int(np.sqrt(len(a)*2))+1
     mask = np.tri(n,dtype=bool, k=-1) # or np.arange(n)[:,None] > np.arange(n)
     out = np.zeros((n,n),dtype=float)
@@ -38,6 +52,14 @@ def fill_upper_triangular(a):
 
 
 def shape_solution(M, m):
+    '''
+    Helper function to ensure the solution given M is
+    a feasible solution. That is, `sum(M) == m`. 
+
+    If this does not apply, check what is the case 
+    (`sum(M) < m` or `sum(M) > m`) and flip values so that
+    the resulting array has ``sum(M) == m``.
+    '''
     M = np.array(M)
     while np.sum(M) > m:
         ones = M.nonzero()[0]
@@ -57,6 +79,13 @@ def calculate_diversity(M, D):
     '''
     This function calculates the diversity of a solution based on the
     definition for the Maximum Diversity Problem.
+
+    Given the distance matrix, ``D`` and a solution `M`, calculate
+    ``sum(D[i,j] * M[i] * M[j])`` for all ``i`` and `j` in `M`, corresponding
+    to all the possible combinations ``(i, j)`` of values within `M`.
+
+    This calculation is optimized to work over symmetric `D`s, that is, 
+    distance matrices that have only the upper triangular filled with data.
     '''
 
     # first, find all the possible combination of indices that lie
@@ -93,6 +122,10 @@ def calculate_diversity(M, D):
 
 
 def brute_force(n, D, m):
+    '''
+    Implementation for the brute force version to find a solution for this problem.
+    Useful to test performance over very small problems (n < 20)
+    '''
     # extract all posible combinations of m cardinality to
     # reduce search space
     all_combs = [np.array(i) 
@@ -111,12 +144,24 @@ def brute_force(n, D, m):
 
 
 def mutation(M, m, m_factor):
+    '''
+    Mutate a solution. For each genotype within the solution, flip it with some m_factor probability.
+    '''
     return shape_solution([genotype if np.random.rand() > m_factor else 1 - genotype for genotype in M], m)
 
 
 
 
 def classic_crossover(father, mother, m):
+    '''
+    Implementation of the classic crossover between two solutions.
+
+    Find a cross point, and copy the left part of the father and the
+    right part of the mother to the new solution.
+
+    The inverse is also considered, returning two possible solutions. These
+    are then shaped to match our problem's criteria.
+    '''
 
     # take random point
     rand_index = np.random.randint(1, len(father) - 1)
@@ -139,6 +184,16 @@ def classic_crossover(father, mother, m):
 
 
 def two_point_crossover(father, mother, m):
+    '''
+    Implementataion of the two point crossover. Find two crossover points
+    and copy the inside of the father and the outsides of the mother to 
+    the new solution.
+
+    The inverse is also considered, returning two possible solutions. These
+    are then shaped to match our problem's criteria. 
+    '''
+
+
     point_1 = np.random.randint(1, len(father) // 2)
     point_2 = np.random.randint(point_1 + 1, len(father) - 1)
 
@@ -160,7 +215,28 @@ def two_point_crossover(father, mother, m):
     return (child_1, child_2)
 
 
-def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations, patience):
+def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002, n_iterations=500, patience=20):
+    '''
+    Implementation of the genetic algorithm. Given n, m, D, find a solution to the problem
+    using a genetic approach.
+
+    ``initial_population`` defines how many solutions will be generated and how big will each
+    generation be.
+
+    ``k_top`` defines how many solutions are kept to reproduce.
+
+    ``m_factor`` defines de mutation factor for each genotype in each solution.
+
+    ``n_iterations`` defines a maximum number of iterations.
+
+    ``patience`` defines a patience counter. This counter will decrease if the best solution
+    found so far has not changed. If the counter runs out, assume stabilization of the 
+    algoritm and return the best solution found. If a new best solution is found, the patience counter is reset to 0.
+    '''
+
+    if initial_population < k_top:
+        raise ValueError("initial_population must be greater than k_top")
+
     # Initialize population
     # For this, lets generate 1 possible solution and calculate permutations over it
     current_generation = [create_random_solution(n, m) for i in range(initial_population)]
@@ -236,7 +312,7 @@ if __name__ == "__main__":
 
 
     start_time = time.time()
-    genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002, n_iterations=100, patience=20)
+    genetic_algorithm(n, m, D, initial_population=100, k_top=20, m_factor=0.002, n_iterations=100, patience=20)
     end_time = time.time()
 
     total_space = factorial(n) // (factorial(n - m) * factorial(m))

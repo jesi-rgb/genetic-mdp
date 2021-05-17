@@ -1,7 +1,7 @@
-from itertools import product, groupby
+import time
+from itertools import product
 from math import factorial
 
-from pprint import pprint
 
 import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
@@ -61,7 +61,7 @@ def calculate_diversity(M, D):
 
     # first, find all the possible combination of indices that lie
     # within the upper triangular section of our n x n matrix
-    indices_triu = np.argwhere(np.triu(np.ones((len(M),)*2),1))
+    indices_triu = np.argwhere(np.triu(np.ones((len(M),) * 2),1))
     indices_triu = indices_triu[indices_triu[:,0] < indices_triu[:,1]]
 
     # second, find all posible combinations of genotypes
@@ -82,11 +82,12 @@ def calculate_diversity(M, D):
     # stack the results so we have rows in the format: [gen1, gen2, gen1_index, gen2_index]
     col_stack = np.column_stack((combs_triu, indices_triu))
 
-    # to calculate the diversity, access the distances matrix with
+    # To calculate the diversity, access the distances matrix with
     # gen1_index and gen2_index, and multiply by the values gen1 and gen2 themselves.
-    # If some of the values is 0, this will all be canceled out. 
+    # If any of the values is 0, this will all be canceled out. 
     # This will return a vector that will contain either the value 
     # of the distance between two particular genes, or 0. Sum it all up and return.
+
     return np.sum([D[ i[2], i[3] ] * i[0] * i[1] 
                     for i in col_stack])
 
@@ -168,7 +169,7 @@ def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations
     last_best_solution = 0
     counter = 0
     for i in range(n_iterations):
-        print("*** Iteration {} ***\n\n".format(i))
+        print("\n\n*** Iteration {} ***\n\n".format(i))
         # Calculate diversity of each one
         diversity_arr = [calculate_diversity(s, D) for s in current_generation]
 
@@ -177,8 +178,7 @@ def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations
         gen_div = list(zip(current_generation, diversity_arr)) 
         sorted_gen_div = sorted(gen_div, key = lambda x: x[1], reverse=True)
 
-
-        print("Best solution in gen {} has diversity {}\n".format(i, sorted_gen_div[0][1]))
+        print("> Best solution in gen {} has diversity {}\n".format(i, sorted_gen_div[0][1]))
         best_solutions = [s[0] for s in sorted_gen_div]
         survivals = best_solutions[:k_top]
 
@@ -197,39 +197,49 @@ def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations
         else:
             last_best_solution = current_best_solution_d
 
-        print("Best solution so far has diversity {}\n".format(last_best_solution))
-        print("Patience counter: {}. {} more to finish if equal.".format(counter, patience - counter))
+        print("> Best solution so far has diversity {}\n".format(last_best_solution))
+        print("> Patience counter: {}. {} more to finish if equal.".format(counter, patience - counter))
         if counter == patience:
             print("Value stabilized at {} with solution {}".format(current_best_solution_d, current_best_solution))
             return (current_best_solution, current_best_solution_d)
 
-    # Mutation
+        # Mutation
         current_generation = [mutation(solution, m, m_factor) for solution in current_generation]
+
+    print("\nRan out of iterations.\n")
+    print("\nBest solution found had diversity {}".format(current_best_solution_d))
+    print("\nBest solution was {}".format(current_best_solution))
+
+    return (current_best_solution, current_best_solution_d)
+
+    
 
 
 
 
 if __name__ == "__main__":
-    # np.random.seed(7)
+    np.random.seed(7)
 
-    n, m, data = read_distance_matrix("src/data/MDG-a_1_n500_m50.txt")
-    
-
+    n, m, data = read_distance_matrix("src/data/MDG-a_2_n500_m50.txt")
     print(data)
-    # # creamos una matriz de distancias para cada pareja de elementos
+    # creamos una matriz de distancias para cada pareja de elementos
     D = fill_upper_triangular(data)
 
+    # n, m = 10, 5
     # D = np.random.randint(100, size=(n, n), dtype=int)
 
-    # creamos una solución aleatoria
 
-    print("La matriz de distancias es:\n")
+    print("Distance matrix:\n")
     print(D)
     print()
     print()
 
+
+    start_time = time.time()
     genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002, n_iterations=100, patience=20)
+    end_time = time.time()
 
     total_space = factorial(n) // (factorial(n - m) * factorial(m))
-    print("\nEl espacio de búsqueda consta de {} posibles soluciones para n = {} y m = {}.".format(total_space, n, m))
+    print("\nTotal time elapsed: {} seconds.".format(end_time - start_time))
+    print("\nSearch space contains {} possible solutions for n = {} and m = {}.".format(total_space, n, m))
 

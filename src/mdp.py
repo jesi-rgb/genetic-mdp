@@ -2,6 +2,7 @@ import time
 from itertools import product
 from math import factorial
 
+import matplotlib.pyplot as plt
 
 import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
@@ -244,6 +245,14 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     current_best_solution_d = 0
     last_best_solution = 0
     counter = 0
+
+
+    # variables for plotting data
+
+    best_solution_history = []
+    patience_history = []
+    best_solution_gen_history = []
+
     for i in range(n_iterations):
         print("\n\n*** Iteration {} ***\n\n".format(i))
         # Calculate diversity of each one
@@ -255,6 +264,10 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
         sorted_gen_div = sorted(gen_div, key = lambda x: x[1], reverse=True)
 
         print("> Best solution in gen {} has diversity {}\n".format(i, sorted_gen_div[0][1]))
+        
+        # for plotting
+        best_solution_gen_history.append(sorted_gen_div[0][1])
+
         best_solutions = [s[0] for s in sorted_gen_div]
         survivals = best_solutions[:k_top]
 
@@ -274,10 +287,16 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
             last_best_solution = current_best_solution_d
 
         print("> Best solution so far has diversity {}\n".format(last_best_solution))
+        
+        # for plotting
+        best_solution_history.append(last_best_solution)
+        patience_history.append(counter)
+
         print("> Patience counter: {}. {} more to finish if equal.".format(counter, patience - counter))
         if counter == patience:
+            iterations = list(range(i+1))
             print("Value stabilized at {} with solution {}".format(current_best_solution_d, current_best_solution))
-            return (current_best_solution, current_best_solution_d)
+            return (current_best_solution, current_best_solution_d), (iterations, best_solution_gen_history, best_solution_history, patience_history)
 
         # Mutation
         current_generation = [mutation(solution, m, m_factor) for solution in current_generation]
@@ -286,7 +305,9 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     print("\nBest solution found had diversity {}".format(current_best_solution_d))
     print("\nBest solution was {}".format(current_best_solution))
 
-    return (current_best_solution, current_best_solution_d)
+    iterations = list(range(i))
+
+    return (current_best_solution, current_best_solution_d), (iterations, best_solution_gen_history, best_solution_history, patience_history)
 
     
 
@@ -296,12 +317,12 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
 if __name__ == "__main__":
     np.random.seed(7)
 
-    n, m, data = read_distance_matrix("src/data/MDG-a_2_n500_m50.txt")
+    n, m, data = read_distance_matrix("src/data/MDG-a_3_n500_m50.txt")
     print(data)
     # creamos una matriz de distancias para cada pareja de elementos
     D = fill_upper_triangular(data)
 
-    # n, m = 10, 5
+    # n, m = 50, 10
     # D = np.random.randint(100, size=(n, n), dtype=int)
 
 
@@ -312,10 +333,27 @@ if __name__ == "__main__":
 
 
     start_time = time.time()
-    genetic_algorithm(n, m, D, initial_population=100, k_top=20, m_factor=0.002, n_iterations=100, patience=20)
+    solution, historic_data = genetic_algorithm(n, m, D, 
+                            initial_population=100, 
+                            k_top=20,
+                            m_factor=0.002, 
+                            n_iterations=100, 
+                            patience=20)
     end_time = time.time()
+
 
     total_space = factorial(n) // (factorial(n - m) * factorial(m))
     print("\nTotal time elapsed: {} seconds.".format(end_time - start_time))
     print("\nSearch space contains {} possible solutions for n = {} and m = {}.".format(total_space, n, m))
+
+    iterations, best_solution_gen_history, best_solution_history, patience_history = historic_data
+
+
+    plt.plot(iterations, best_solution_history, linewidth=3)
+    plt.plot(iterations, best_solution_gen_history, 'y--', linewidth=3)
+
+    plt.ylabel("Diversity")
+    plt.xlabel("Generation")
+    plt.tight_layout()
+    plt.show()
 

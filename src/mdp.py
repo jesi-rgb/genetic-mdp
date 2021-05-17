@@ -38,13 +38,14 @@ def fill_upper_triangular(a):
 
 
 def shape_solution(M, m):
+    M = np.array(M)
     while np.sum(M) > m:
         ones = M.nonzero()[0]
         random_one = np.random.choice(ones)
         M[random_one] = 0
 
     while np.sum(M) < m:
-        zeros = np.nonzero(M==0)[0]
+        zeros = np.where(M==0)[0]
         random_zero = np.random.choice(zeros)
         M[random_zero] = 1
 
@@ -108,8 +109,8 @@ def brute_force(n, D, m):
     print("La mejor solución es {}, en el índice {} con una diversidad de {}".format(best_comb, index, max_v))
 
 
-def mutation(M, m_factor):
-    return [genotype if np.random.rand() > m_factor else 1 - genotype for genotype in M]
+def mutation(M, m, m_factor):
+    return shape_solution([genotype if np.random.rand() > m_factor else 1 - genotype for genotype in M], m)
 
 
 
@@ -183,7 +184,7 @@ def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations
 
         pairs = np.squeeze(sliding_window_view(survivals, (2, n)))
 
-        current_generation = [classic_crossover(pair[0], pair[1], m) for pair in pairs]
+        current_generation = [two_point_crossover(pair[0], pair[1], m) for pair in pairs]
         current_generation = np.reshape(current_generation, (2 * (k_top - 1), n))
 
         if current_best_solution_d < sorted_gen_div[0][1]:
@@ -203,7 +204,7 @@ def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations
             return (current_best_solution, current_best_solution_d)
 
     # Mutation
-        current_generation = [mutation(solution, m_factor) for solution in current_generation]
+        current_generation = [mutation(solution, m, m_factor) for solution in current_generation]
 
 
 
@@ -211,14 +212,14 @@ def genetic_algorithm(n, m, D, initial_population, k_top, m_factor, n_iterations
 if __name__ == "__main__":
     # np.random.seed(7)
 
-    n, m, data = read_distance_matrix("src/data/MDG-a_2_n500_m50.txt")
+    n, m, data = read_distance_matrix("src/data/MDG-a_1_n500_m50.txt")
     
-    total_space = factorial(n) // (factorial(n - m) * factorial(m))
 
     print(data)
-    # creamos una matriz de distancias para cada pareja de elementos
+    # # creamos una matriz de distancias para cada pareja de elementos
     D = fill_upper_triangular(data)
 
+    # D = np.random.randint(100, size=(n, n), dtype=int)
 
     # creamos una solución aleatoria
 
@@ -227,9 +228,8 @@ if __name__ == "__main__":
     print()
     print()
 
-    genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.02, n_iterations=100, patience=20)
+    genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002, n_iterations=100, patience=20)
 
+    total_space = factorial(n) // (factorial(n - m) * factorial(m))
     print("\nEl espacio de búsqueda consta de {} posibles soluciones para n = {} y m = {}.".format(total_space, n, m))
-
-
 

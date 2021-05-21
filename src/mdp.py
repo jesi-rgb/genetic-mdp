@@ -1,7 +1,12 @@
+# coding=utf-8
+
 import time
+import argparse
+
 from itertools import product
 from math import factorial
 
+ 
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -294,9 +299,8 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
 
         print("> Patience counter: {}. {} more to finish if equal.".format(counter, patience - counter))
         if counter == patience:
-            iterations = list(range(i+1))
             print("Value stabilized at {} with solution {}".format(current_best_solution_d, current_best_solution))
-            return (current_best_solution, current_best_solution_d), (iterations, best_solution_gen_history, best_solution_history, patience_history)
+            return (current_best_solution, current_best_solution_d), (best_solution_gen_history, best_solution_history, patience_history)
 
         # Mutation
         current_generation = [mutation(solution, m, m_factor) for solution in current_generation]
@@ -305,9 +309,7 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     print("\nBest solution found had diversity {}".format(current_best_solution_d))
     print("\nBest solution was {}".format(current_best_solution))
 
-    iterations = list(range(i))
-
-    return (current_best_solution, current_best_solution_d), (iterations, best_solution_gen_history, best_solution_history, patience_history)
+    return (current_best_solution, current_best_solution_d), (best_solution_gen_history, best_solution_history, patience_history)
 
     
 
@@ -317,13 +319,20 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
 if __name__ == "__main__":
     np.random.seed(7)
 
-    n, m, data = read_distance_matrix("src/data/MDG-a_3_n500_m50.txt")
-    print(data)
-    # creamos una matriz de distancias para cada pareja de elementos
-    D = fill_upper_triangular(data)
+    argparse = argparse.ArgumentParser("Pass in the file to process")
+    argparse.add_argument('--file', '-f', type=str)
 
-    # n, m = 50, 10
-    # D = np.random.randint(100, size=(n, n), dtype=int)
+    args = argparse.parse_args()
+
+    if args.file is not None:
+
+        n, m, data = read_distance_matrix("data/{}".format(args.file))
+        print(data)
+        # creamos una matriz de distancias para cada pareja de elementos
+        D = fill_upper_triangular(data)
+    else:
+        n, m = 20, 10
+        D = np.random.randint(100, size=(n, n), dtype=int)
 
 
     print("Distance matrix:\n")
@@ -346,14 +355,14 @@ if __name__ == "__main__":
     print("\nTotal time elapsed: {} seconds.".format(end_time - start_time))
     print("\nSearch space contains {} possible solutions for n = {} and m = {}.".format(total_space, n, m))
 
-    iterations, best_solution_gen_history, best_solution_history, patience_history = historic_data
+    best_solution_gen_history, best_solution_history, patience_history = historic_data
 
 
-    plt.plot(iterations, best_solution_history, linewidth=3)
-    plt.plot(iterations, best_solution_gen_history, 'y--', linewidth=3)
+    plt.plot(list(range(len(best_solution_history))), best_solution_history, linewidth=3)
+    plt.plot(list(range(len(best_solution_gen_history))), best_solution_gen_history, 'y--', linewidth=3)
 
     plt.ylabel("Diversity")
     plt.xlabel("Generation")
     plt.tight_layout()
-    plt.show()
+    plt.savefig("results/{}.pdf".format(args.file[:-4]))
 

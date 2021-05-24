@@ -3,10 +3,12 @@
 import time
 import argparse
 
+from multiprocessing import Pool, cpu_count
+
 from itertools import product
 from math import factorial
+from functools import partial
 
- 
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -51,7 +53,7 @@ def fill_upper_triangular(a):
     filled with the data recovered from the files.
     '''
     n = int(np.sqrt(len(a)*2))+1
-    mask = np.tri(n,dtype=bool, k=-1) # or np.arange(n)[:,None] > np.arange(n)
+    mask = np.tri(n, dtype=bool, k=-1) # or np.arange(n)[:,None] > np.arange(n)
     out = np.zeros((n,n),dtype=float)
     out[mask] = a
     return out.T
@@ -80,7 +82,7 @@ def shape_solution(M, m):
     return M
 
    
-def calculate_diversity(M, D):
+def calculate_diversity(M, D, pool):
     
     '''
     This function calculates the diversity of a solution based on the
@@ -106,9 +108,10 @@ def calculate_diversity(M, D):
 
     # third, calculate all the possible combinations of genotypes, 
     # just as before, but now with the indices, not the values themselves
-    M_i = np.indices(np.array(M).shape)
-    mesh_i = np.array(np.meshgrid(M_i, M_i))
-    combs_i = mesh_i.T.reshape(-1, 2)
+    
+    M_i = np.indices((len(M),))
+    mesh_i = np.meshgrid(M_i, M_i)
+    combs_i = np.transpose(mesh_i).reshape(-1, 2)
 
     # given those, find all combinations that match our
     # upper triangular section rule, just like before
@@ -122,10 +125,18 @@ def calculate_diversity(M, D):
     # If any of the values is 0, this will all be canceled out. 
     # This will return a vector that will contain either the value 
     # of the distance between two particular genes, or 0. Sum it all up and return.
+ 
 
-    return np.sum([D[ i[2], i[3] ] * i[0] * i[1] 
-                    for i in col_stack])
+    partial_func = partial(calculate_diversity_parallel, D=D)
+    diversity = np.sum(pool.map(partial_func, col_stack))
+    
+    return diversity
+    # return np.sum([D[ i[2], i[3] ] * i[0] * i[1] 
+    #                 for i in col_stack])
 
+
+def calculate_diversity_parallel(genes, D):
+    return D[ genes[2], genes[3] ] * genes[0] * genes[1]
 
 def brute_force(n, D, m):
     '''
@@ -258,10 +269,13 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     patience_history = []
     best_solution_gen_history = []
 
+    
+    pool = Pool(cpu_count())
+
     for i in range(n_iterations):
         print("\n\n*** Iteration {} ***\n\n".format(i))
         # Calculate diversity of each one
-        diversity_arr = [calculate_diversity(s, D) for s in current_generation]
+        diversity_arr = [calculate_diversity(s, D, pool) for s in current_generation]
 
 
         # Take the best k ones and crossover
@@ -328,10 +342,9 @@ if __name__ == "__main__":
 
         n, m, data = read_distance_matrix("data/{}".format(args.file))
         print(data)
-        # creamos una matriz de distancias para cada pareja de elementos
         D = fill_upper_triangular(data)
     else:
-        n, m = 20, 10
+        n, m = 90, 20
         D = np.random.randint(100, size=(n, n), dtype=int)
 
 
@@ -343,7 +356,7 @@ if __name__ == "__main__":
 
     start_time = time.time()
     solution, historic_data = genetic_algorithm(n, m, D, 
-                            initial_population=100, 
+                            initial_population=50, 
                             k_top=20,
                             m_factor=0.002, 
                             n_iterations=100, 
@@ -364,5 +377,8 @@ if __name__ == "__main__":
     plt.ylabel("Diversity")
     plt.xlabel("Generation")
     plt.tight_layout()
-    plt.savefig("results/{}.pdf".format(args.file[:-4]))
+    if args.file is not None:
+        plt.savefig("results/{}.pdf".format(args.file[:-4]))
+    else:
+        plt.show()
 

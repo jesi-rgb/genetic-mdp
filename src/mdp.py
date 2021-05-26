@@ -244,9 +244,14 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     if initial_population < k_top:
         raise ValueError("initial_population must be greater than k_top")
 
+    
+    pool = Pool(cpu_count())
+    partial_func = partial(calculate_diversity, D=D)
+
     # Initialize population
     # For this, lets generate 1 possible solution and calculate permutations over it
     current_generation = [create_random_solution(n, m) for i in range(initial_population)]
+    diversity_arr = pool.map(partial_func, current_generation)
 
     current_best_solution_d = 0
     last_best_solution = 0
@@ -257,23 +262,13 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     patience_history = []
     best_solution_gen_history = []
 
-    pool = Pool(cpu_count())
 
     for i in range(n_iterations):
         print("\n\n*** Iteration {} ***\n\n".format(i))
-        # Calculate diversity of each solution in our generation
+        # Select k_top best parents from this generation
 
-        partial_func = partial(calculate_diversity, D=D)
-        diversity_arr = pool.map(partial_func, current_generation)
-
-        # Take the best k ones and crossover
         gen_div = list(zip(current_generation, diversity_arr)) 
         sorted_gen_div = sorted(gen_div, key = lambda x: x[1], reverse=True)
-
-        print("> Best solution in gen {} has diversity {}\n".format(i, sorted_gen_div[0][1]))
-        
-        # for plotting
-        best_solution_gen_history.append(sorted_gen_div[0][1])
 
         best_solutions = [s[0] for s in sorted_gen_div]
         survivals = best_solutions[:k_top]
@@ -286,6 +281,15 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
         # Mutation
         current_generation = [mutation(solution, m, m_factor) for solution in current_generation]
         
+        diversity_arr = pool.map(partial_func, current_generation)
+
+        # Take the best k ones and crossover
+
+        print("> Best solution in gen {} has diversity {}\n".format(i, sorted_gen_div[0][1]))
+        
+        # for plotting
+        best_solution_gen_history.append(sorted_gen_div[0][1])
+
         if current_best_solution_d < sorted_gen_div[0][1]:
             current_best_solution_d = sorted_gen_div[0][1]
             current_best_solution = sorted_gen_div[0][0]
@@ -335,7 +339,7 @@ if __name__ == "__main__":
         print(data)
         D = fill_upper_triangular(data)
     else:
-        n, m = 2000, 200
+        n, m = 300, 50
         D = np.random.randint(100, size=(n, n), dtype=int)
 
 

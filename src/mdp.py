@@ -82,8 +82,7 @@ def shape_solution(M, m):
     return M
 
    
-def calculate_diversity(M, D, pool):
-    
+def calculate_diversity(M, D):
     '''
     This function calculates the diversity of a solution based on the
     definition for the Maximum Diversity Problem.
@@ -125,18 +124,9 @@ def calculate_diversity(M, D, pool):
     # If any of the values is 0, this will all be canceled out. 
     # This will return a vector that will contain either the value 
     # of the distance between two particular genes, or 0. Sum it all up and return.
- 
+    return np.sum([D[ i[2], i[3] ] * i[0] * i[1] 
+                    for i in col_stack])
 
-    partial_func = partial(calculate_diversity_parallel, D=D)
-    diversity = np.sum(pool.map(partial_func, col_stack))
-    
-    return diversity
-    # return np.sum([D[ i[2], i[3] ] * i[0] * i[1] 
-    #                 for i in col_stack])
-
-
-def calculate_diversity_parallel(genes, D):
-    return D[ genes[2], genes[3] ] * genes[0] * genes[1]
 
 def brute_force(n, D, m):
     '''
@@ -262,21 +252,19 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     last_best_solution = 0
     counter = 0
 
-
     # variables for plotting data
-
     best_solution_history = []
     patience_history = []
     best_solution_gen_history = []
 
-    
     pool = Pool(cpu_count())
 
     for i in range(n_iterations):
         print("\n\n*** Iteration {} ***\n\n".format(i))
-        # Calculate diversity of each one
-        diversity_arr = [calculate_diversity(s, D, pool) for s in current_generation]
+        # Calculate diversity of each solution in our generation
 
+        partial_func = partial(calculate_diversity, D=D)
+        diversity_arr = pool.map(partial_func, current_generation)
 
         # Take the best k ones and crossover
         gen_div = list(zip(current_generation, diversity_arr)) 
@@ -313,7 +301,9 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
 
         print("> Patience counter: {}. {} more to finish if equal.".format(counter, patience - counter))
         if counter == patience:
-            print("Value stabilized at {} with solution {}".format(current_best_solution_d, current_best_solution))
+            print("\nPatience counter dropped to 0.\n")
+            print("\nBest solution found had diversity {}".format(current_best_solution_d))
+            print("\nBest solution was {}".format(current_best_solution))
             return (current_best_solution, current_best_solution_d), (best_solution_gen_history, best_solution_history, patience_history)
 
         # Mutation
@@ -344,7 +334,7 @@ if __name__ == "__main__":
         print(data)
         D = fill_upper_triangular(data)
     else:
-        n, m = 90, 20
+        n, m = 2000, 200
         D = np.random.randint(100, size=(n, n), dtype=int)
 
 
@@ -378,6 +368,7 @@ if __name__ == "__main__":
     plt.xlabel("Generation")
     plt.tight_layout()
     if args.file is not None:
+        plt.title(args.file[:-4])
         plt.savefig("results/{}.pdf".format(args.file[:-4]))
     else:
         plt.show()

@@ -366,10 +366,12 @@ if __name__ == "__main__":
 
     plt.ylabel("Diversity")
     plt.xlabel("Generation")
-    plt.tight_layout()
+    
     if args.file is not None:
         plt.title(args.file[:-4])
+        plt.tight_layout()
         plt.savefig("results/{}.pdf".format(args.file[:-4]))
     else:
+        plt.tight_layout()
         plt.show()
 

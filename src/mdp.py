@@ -244,7 +244,7 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     if initial_population < k_top:
         raise ValueError("initial_population must be greater than k_top")
 
-    
+    # Initialization of misc variables to help in the calculation
     pool = Pool(cpu_count())
     partial_func = partial(calculate_diversity, D=D)
 
@@ -253,6 +253,7 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
     current_generation = [create_random_solution(n, m) for i in range(initial_population)]
     diversity_arr = pool.map(partial_func, current_generation)
 
+    # To keep track during the execution
     current_best_solution_d = 0
     last_best_solution = 0
     counter = 0
@@ -265,27 +266,32 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
 
     for i in range(n_iterations):
         print("\n\n*** Iteration {} ***\n\n".format(i))
-        # Select k_top best parents from this generation
 
+        # sort this generation based on fitness
         gen_div = list(zip(current_generation, diversity_arr)) 
         sorted_gen_div = sorted(gen_div, key = lambda x: x[1], reverse=True)
 
+        # Select k_top best parents from this generation
         best_solutions = [s[0] for s in sorted_gen_div]
         survivals = best_solutions[:k_top]
 
+        print("> Best solution in gen {} had diversity {}\n".format(i, sorted_gen_div[0][1]))
+        
+        # given the survivals, generate all possible combination of 
+        # pairs between them
         pairs = np.squeeze(sliding_window_view(survivals, (2, n)))
 
+        # apply crossover for all pairs to build next generation
         current_generation = [two_point_crossover(pair[0], pair[1], m) for pair in pairs]
         current_generation = np.reshape(current_generation, (2 * (k_top - 1), n))
 
         # Mutation
         current_generation = [mutation(solution, m, m_factor) for solution in current_generation]
         
+        # calculate fitness for this generation
         diversity_arr = pool.map(partial_func, current_generation)
 
-        # Take the best k ones and crossover
 
-        print("> Best solution in gen {} has diversity {}\n".format(i, sorted_gen_div[0][1]))
         
         # for plotting
         best_solution_gen_history.append(sorted_gen_div[0][1])

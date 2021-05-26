@@ -283,6 +283,9 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
         current_generation = [two_point_crossover(pair[0], pair[1], m) for pair in pairs]
         current_generation = np.reshape(current_generation, (2 * (k_top - 1), n))
 
+        # Mutation
+        current_generation = [mutation(solution, m, m_factor) for solution in current_generation]
+        
         if current_best_solution_d < sorted_gen_div[0][1]:
             current_best_solution_d = sorted_gen_div[0][1]
             current_best_solution = sorted_gen_div[0][0]
@@ -306,8 +309,6 @@ def genetic_algorithm(n, m, D, initial_population=100, k_top=15, m_factor=0.002,
             print("\nBest solution was {}".format(current_best_solution))
             return (current_best_solution, current_best_solution_d), (best_solution_gen_history, best_solution_history, patience_history)
 
-        # Mutation
-        current_generation = [mutation(solution, m, m_factor) for solution in current_generation]
 
     print("\nRan out of iterations.\n")
     print("\nBest solution found had diversity {}".format(current_best_solution_d))

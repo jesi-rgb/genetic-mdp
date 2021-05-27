@@ -4,5 +4,5 @@ media/
 media/cross-operator.pdf
 *.pdf
 data
-results
+old_results
 Tablas*

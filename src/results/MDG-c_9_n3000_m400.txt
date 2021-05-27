@@ -1,0 +1,1024 @@
+Reading 4498500 lines
+[680. 416. 943. ... 640. 172. 477.]
+Distance matrix:
+
+[[  0. 680. 416. ... 865. 612. 780.]
+ [  0.   0. 943. ... 189. 368. 998.]
+ [  0.   0.   0. ... 951. 796. 718.]
+ ...
+ [  0.   0.   0. ...   0. 461. 172.]
+ [  0.   0.   0. ...   0.   0. 477.]
+ [  0.   0.   0. ...   0.   0.   0.]]
+
+
+
+
+*** Iteration 0 ***
+
+
+> Best solution in gen 0 had diversity 40041919.0
+
+> Best solution so far has diversity 40041919.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 1 ***
+
+
+> Best solution in gen 1 had diversity 40083193.0
+
+> Best solution so far has diversity 40083193.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 2 ***
+
+
+> Best solution in gen 2 had diversity 40101728.0
+
+> Best solution so far has diversity 40101728.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 3 ***
+
+
+> Best solution in gen 3 had diversity 40110695.0
+
+> Best solution so far has diversity 40110695.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 4 ***
+
+
+> Best solution in gen 4 had diversity 40115794.0
+
+> Best solution so far has diversity 40115794.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 5 ***
+
+
+> Best solution in gen 5 had diversity 40157990.0
+
+> Best solution so far has diversity 40157990.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 6 ***
+
+
+> Best solution in gen 6 had diversity 40281305.0
+
+> Best solution so far has diversity 40281305.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 7 ***
+
+
+> Best solution in gen 7 had diversity 40142023.0
+
+> Best solution so far has diversity 40281305.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 8 ***
+
+
+> Best solution in gen 8 had diversity 40227533.0
+
+> Best solution so far has diversity 40281305.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 9 ***
+
+
+> Best solution in gen 9 had diversity 40221308.0
+
+> Best solution so far has diversity 40281305.0
+
+> Patience counter: 3. 17 more to finish if equal.
+
+
+*** Iteration 10 ***
+
+
+> Best solution in gen 10 had diversity 40228383.0
+
+> Best solution so far has diversity 40281305.0
+
+> Patience counter: 4. 16 more to finish if equal.
+
+
+*** Iteration 11 ***
+
+
+> Best solution in gen 11 had diversity 40260703.0
+
+> Best solution so far has diversity 40281305.0
+
+> Patience counter: 5. 15 more to finish if equal.
+
+
+*** Iteration 12 ***
+
+
+> Best solution in gen 12 had diversity 40260138.0
+
+> Best solution so far has diversity 40281305.0
+
+> Patience counter: 6. 14 more to finish if equal.
+
+
+*** Iteration 13 ***
+
+
+> Best solution in gen 13 had diversity 40261534.0
+
+> Best solution so far has diversity 40281305.0
+
+> Patience counter: 7. 13 more to finish if equal.
+
+
+*** Iteration 14 ***
+
+
+> Best solution in gen 14 had diversity 40307446.0
+
+> Best solution so far has diversity 40307446.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 15 ***
+
+
+> Best solution in gen 15 had diversity 40347677.0
+
+> Best solution so far has diversity 40347677.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 16 ***
+
+
+> Best solution in gen 16 had diversity 40331989.0
+
+> Best solution so far has diversity 40347677.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 17 ***
+
+
+> Best solution in gen 17 had diversity 40319656.0
+
+> Best solution so far has diversity 40347677.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 18 ***
+
+
+> Best solution in gen 18 had diversity 40362338.0
+
+> Best solution so far has diversity 40362338.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 19 ***
+
+
+> Best solution in gen 19 had diversity 40382626.0
+
+> Best solution so far has diversity 40382626.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 20 ***
+
+
+> Best solution in gen 20 had diversity 40389134.0
+
+> Best solution so far has diversity 40389134.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 21 ***
+
+
+> Best solution in gen 21 had diversity 40410806.0
+
+> Best solution so far has diversity 40410806.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 22 ***
+
+
+> Best solution in gen 22 had diversity 40390021.0
+
+> Best solution so far has diversity 40410806.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 23 ***
+
+
+> Best solution in gen 23 had diversity 40427334.0
+
+> Best solution so far has diversity 40427334.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 24 ***
+
+
+> Best solution in gen 24 had diversity 40439892.0
+
+> Best solution so far has diversity 40439892.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 25 ***
+
+
+> Best solution in gen 25 had diversity 40435151.0
+
+> Best solution so far has diversity 40439892.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 26 ***
+
+
+> Best solution in gen 26 had diversity 40459253.0
+
+> Best solution so far has diversity 40459253.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 27 ***
+
+
+> Best solution in gen 27 had diversity 40472644.0
+
+> Best solution so far has diversity 40472644.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 28 ***
+
+
+> Best solution in gen 28 had diversity 40488194.0
+
+> Best solution so far has diversity 40488194.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 29 ***
+
+
+> Best solution in gen 29 had diversity 40500858.0
+
+> Best solution so far has diversity 40500858.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 30 ***
+
+
+> Best solution in gen 30 had diversity 40545451.0
+
+> Best solution so far has diversity 40545451.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 31 ***
+
+
+> Best solution in gen 31 had diversity 40550606.0
+
+> Best solution so far has diversity 40550606.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 32 ***
+
+
+> Best solution in gen 32 had diversity 40543749.0
+
+> Best solution so far has diversity 40550606.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 33 ***
+
+
+> Best solution in gen 33 had diversity 40562789.0
+
+> Best solution so far has diversity 40562789.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 34 ***
+
+
+> Best solution in gen 34 had diversity 40556392.0
+
+> Best solution so far has diversity 40562789.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 35 ***
+
+
+> Best solution in gen 35 had diversity 40594887.0
+
+> Best solution so far has diversity 40594887.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 36 ***
+
+
+> Best solution in gen 36 had diversity 40622926.0
+
+> Best solution so far has diversity 40622926.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 37 ***
+
+
+> Best solution in gen 37 had diversity 40621369.0
+
+> Best solution so far has diversity 40622926.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 38 ***
+
+
+> Best solution in gen 38 had diversity 40617229.0
+
+> Best solution so far has diversity 40622926.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 39 ***
+
+
+> Best solution in gen 39 had diversity 40601418.0
+
+> Best solution so far has diversity 40622926.0
+
+> Patience counter: 3. 17 more to finish if equal.
+
+
+*** Iteration 40 ***
+
+
+> Best solution in gen 40 had diversity 40644959.0
+
+> Best solution so far has diversity 40644959.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 41 ***
+
+
+> Best solution in gen 41 had diversity 40631584.0
+
+> Best solution so far has diversity 40644959.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 42 ***
+
+
+> Best solution in gen 42 had diversity 40631807.0
+
+> Best solution so far has diversity 40644959.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 43 ***
+
+
+> Best solution in gen 43 had diversity 40666295.0
+
+> Best solution so far has diversity 40666295.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 44 ***
+
+
+> Best solution in gen 44 had diversity 40677237.0
+
+> Best solution so far has diversity 40677237.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 45 ***
+
+
+> Best solution in gen 45 had diversity 40668261.0
+
+> Best solution so far has diversity 40677237.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 46 ***
+
+
+> Best solution in gen 46 had diversity 40618280.0
+
+> Best solution so far has diversity 40677237.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 47 ***
+
+
+> Best solution in gen 47 had diversity 40658213.0
+
+> Best solution so far has diversity 40677237.0
+
+> Patience counter: 3. 17 more to finish if equal.
+
+
+*** Iteration 48 ***
+
+
+> Best solution in gen 48 had diversity 40671715.0
+
+> Best solution so far has diversity 40677237.0
+
+> Patience counter: 4. 16 more to finish if equal.
+
+
+*** Iteration 49 ***
+
+
+> Best solution in gen 49 had diversity 40650667.0
+
+> Best solution so far has diversity 40677237.0
+
+> Patience counter: 5. 15 more to finish if equal.
+
+
+*** Iteration 50 ***
+
+
+> Best solution in gen 50 had diversity 40684195.0
+
+> Best solution so far has diversity 40684195.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 51 ***
+
+
+> Best solution in gen 51 had diversity 40693186.0
+
+> Best solution so far has diversity 40693186.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 52 ***
+
+
+> Best solution in gen 52 had diversity 40679520.0
+
+> Best solution so far has diversity 40693186.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 53 ***
+
+
+> Best solution in gen 53 had diversity 40669902.0
+
+> Best solution so far has diversity 40693186.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 54 ***
+
+
+> Best solution in gen 54 had diversity 40697420.0
+
+> Best solution so far has diversity 40697420.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 55 ***
+
+
+> Best solution in gen 55 had diversity 40657849.0
+
+> Best solution so far has diversity 40697420.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 56 ***
+
+
+> Best solution in gen 56 had diversity 40676632.0
+
+> Best solution so far has diversity 40697420.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 57 ***
+
+
+> Best solution in gen 57 had diversity 40678129.0
+
+> Best solution so far has diversity 40697420.0
+
+> Patience counter: 3. 17 more to finish if equal.
+
+
+*** Iteration 58 ***
+
+
+> Best solution in gen 58 had diversity 40687631.0
+
+> Best solution so far has diversity 40697420.0
+
+> Patience counter: 4. 16 more to finish if equal.
+
+
+*** Iteration 59 ***
+
+
+> Best solution in gen 59 had diversity 40692548.0
+
+> Best solution so far has diversity 40697420.0
+
+> Patience counter: 5. 15 more to finish if equal.
+
+
+*** Iteration 60 ***
+
+
+> Best solution in gen 60 had diversity 40702108.0
+
+> Best solution so far has diversity 40702108.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 61 ***
+
+
+> Best solution in gen 61 had diversity 40692254.0
+
+> Best solution so far has diversity 40702108.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 62 ***
+
+
+> Best solution in gen 62 had diversity 40685238.0
+
+> Best solution so far has diversity 40702108.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 63 ***
+
+
+> Best solution in gen 63 had diversity 40690822.0
+
+> Best solution so far has diversity 40702108.0
+
+> Patience counter: 3. 17 more to finish if equal.
+
+
+*** Iteration 64 ***
+
+
+> Best solution in gen 64 had diversity 40706271.0
+
+> Best solution so far has diversity 40706271.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 65 ***
+
+
+> Best solution in gen 65 had diversity 40686055.0
+
+> Best solution so far has diversity 40706271.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 66 ***
+
+
+> Best solution in gen 66 had diversity 40690579.0
+
+> Best solution so far has diversity 40706271.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 67 ***
+
+
+> Best solution in gen 67 had diversity 40720547.0
+
+> Best solution so far has diversity 40720547.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 68 ***
+
+
+> Best solution in gen 68 had diversity 40687547.0
+
+> Best solution so far has diversity 40720547.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 69 ***
+
+
+> Best solution in gen 69 had diversity 40715435.0
+
+> Best solution so far has diversity 40720547.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 70 ***
+
+
+> Best solution in gen 70 had diversity 40759200.0
+
+> Best solution so far has diversity 40759200.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 71 ***
+
+
+> Best solution in gen 71 had diversity 40760074.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 72 ***
+
+
+> Best solution in gen 72 had diversity 40676868.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 73 ***
+
+
+> Best solution in gen 73 had diversity 40697169.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 74 ***
+
+
+> Best solution in gen 74 had diversity 40713945.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 3. 17 more to finish if equal.
+
+
+*** Iteration 75 ***
+
+
+> Best solution in gen 75 had diversity 40690785.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 4. 16 more to finish if equal.
+
+
+*** Iteration 76 ***
+
+
+> Best solution in gen 76 had diversity 40662016.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 5. 15 more to finish if equal.
+
+
+*** Iteration 77 ***
+
+
+> Best solution in gen 77 had diversity 40697604.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 6. 14 more to finish if equal.
+
+
+*** Iteration 78 ***
+
+
+> Best solution in gen 78 had diversity 40697965.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 7. 13 more to finish if equal.
+
+
+*** Iteration 79 ***
+
+
+> Best solution in gen 79 had diversity 40709503.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 8. 12 more to finish if equal.
+
+
+*** Iteration 80 ***
+
+
+> Best solution in gen 80 had diversity 40681062.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 9. 11 more to finish if equal.
+
+
+*** Iteration 81 ***
+
+
+> Best solution in gen 81 had diversity 40713764.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 10. 10 more to finish if equal.
+
+
+*** Iteration 82 ***
+
+
+> Best solution in gen 82 had diversity 40719876.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 11. 9 more to finish if equal.
+
+
+*** Iteration 83 ***
+
+
+> Best solution in gen 83 had diversity 40748734.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 12. 8 more to finish if equal.
+
+
+*** Iteration 84 ***
+
+
+> Best solution in gen 84 had diversity 40696500.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 13. 7 more to finish if equal.
+
+
+*** Iteration 85 ***
+
+
+> Best solution in gen 85 had diversity 40709777.0
+
+> Best solution so far has diversity 40760074.0
+
+> Patience counter: 14. 6 more to finish if equal.
+
+
+*** Iteration 86 ***
+
+
+> Best solution in gen 86 had diversity 40764137.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 0. 20 more to finish if equal.
+
+
+*** Iteration 87 ***
+
+
+> Best solution in gen 87 had diversity 40711526.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 1. 19 more to finish if equal.
+
+
+*** Iteration 88 ***
+
+
+> Best solution in gen 88 had diversity 40723173.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 2. 18 more to finish if equal.
+
+
+*** Iteration 89 ***
+
+
+> Best solution in gen 89 had diversity 40762504.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 3. 17 more to finish if equal.
+
+
+*** Iteration 90 ***
+
+
+> Best solution in gen 90 had diversity 40745155.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 4. 16 more to finish if equal.
+
+
+*** Iteration 91 ***
+
+
+> Best solution in gen 91 had diversity 40742190.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 5. 15 more to finish if equal.
+
+
+*** Iteration 92 ***
+
+
+> Best solution in gen 92 had diversity 40694723.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 6. 14 more to finish if equal.
+
+
+*** Iteration 93 ***
+
+
+> Best solution in gen 93 had diversity 40692405.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 7. 13 more to finish if equal.
+
+
+*** Iteration 94 ***
+
+
+> Best solution in gen 94 had diversity 40722461.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 8. 12 more to finish if equal.
+
+
+*** Iteration 95 ***
+
+
+> Best solution in gen 95 had diversity 40716036.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 9. 11 more to finish if equal.
+
+
+*** Iteration 96 ***
+
+
+> Best solution in gen 96 had diversity 40704671.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 10. 10 more to finish if equal.
+
+
+*** Iteration 97 ***
+
+
+> Best solution in gen 97 had diversity 40754710.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 11. 9 more to finish if equal.
+
+
+*** Iteration 98 ***
+
+
+> Best solution in gen 98 had diversity 40736660.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 12. 8 more to finish if equal.
+
+
+*** Iteration 99 ***
+
+
+> Best solution in gen 99 had diversity 40707120.0
+
+> Best solution so far has diversity 40764137.0
+
+> Patience counter: 13. 7 more to finish if equal.
+
+Ran out of iterations.
+
+
+Best solution found had diversity 40764137.0
+
+Best solution was [0 1 0 ... 0 1 0]
+
+Total time elapsed: 4122.154310464859 seconds.
+
+Search space contains 870812377275629861911044568263215329144195712162413926903051580801940192142980931911603259203823418846242826635591269610583789910077459511589275908051050000945134299448161008389353832007842700517920862858895516258021289219656839827022459575462672493110687388634047552142934838084329529512711073887708116846127833768432332553610337610140249064513137866586796784951301369132879973389802123453550198256925555849856347744206723842382283608443422577913860336228991353363744361947875499130948589752174660298991661095 possible solutions for n = 3000 and m = 400.

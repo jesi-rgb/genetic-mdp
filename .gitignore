@@ -2,7 +2,7 @@
 media/
 *.ai
 media/cross-operator.pdf
-*.pdf
 data
 old_results
+exec.sh
 Tablas*

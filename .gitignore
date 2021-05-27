@@ -6,3 +6,5 @@ data
 old_results
 exec.sh
 Tablas*
+*.ipynb 
+.ipynb_checkpoints 

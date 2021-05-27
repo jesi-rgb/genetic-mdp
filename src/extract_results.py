@@ -1,3 +1,5 @@
+# Simple script to extract time and re
+
 import os
 import pandas as pd
 pd.options.display.float_format = '{:.2f}'.format
